@@ -3,31 +3,36 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/auth_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3306/auth_db}
     username: root
     password: smit
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
   data:
     redis:
-      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      host: ${SPRING_DATA_REDIS_HOST:redis}
       port: 6379
+
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${SPRING_MAIL_USERNAME:placementlpu0@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:tvvqfgydttpugjql}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
   cloud:
     config:
       fail-fast: true
+
   cache:
     type: redis
     redis:
@@ -41,10 +46,12 @@ eureka:
   client:
     registry-fetch-interval-seconds: 10
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://discovery-server:8761/eureka}
+
   instance:
     prefer-ip-address: true
-    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:auth-service}
+
 security:
   jwt:
     secret: my-super-secret-jwt-key-my-super-secret-jwt-key
@@ -62,15 +69,18 @@ management:
     web:
       exposure:
         include: health,info,prometheus
+
   health:
     mail:
       enabled: false
+
   tracing:
     sampling:
       probability: 1.0
+
   zipkin:
     tracing:
-      endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:http://localhost:9411/api/v2/spans}
+      endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:http://zipkin:9411/api/v2/spans}
 
 logging:
   file:
