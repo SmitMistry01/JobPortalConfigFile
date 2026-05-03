@@ -81,6 +81,16 @@ spring:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
                 key-resolver: "#{@userKeyResolver}"
+                
+        - id: ai-service
+          uri: lb://AI-SERVICE
+          predicates:
+            - Path=/api/ai/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: aiServiceCircuit
+                fallbackUri: forward:/fallback/ai-service
 
 resilience4j:
   circuitbreaker:
@@ -104,6 +114,12 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 20s
       adminServiceCircuit:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 20s
+      aiServiceCircuit:
         slidingWindowType: COUNT_BASED
         slidingWindowSize: 10
         minimumNumberOfCalls: 5
