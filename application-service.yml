@@ -58,6 +58,10 @@ ai:
   service:
     ats-score-url: http://ai-service:8086/api/ai/ats-score
 
+job:
+  service:
+    url: http://job-service:8082/api/jobs/
+
 logging:
   file:
     name: logs/application-service.log
