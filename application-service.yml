@@ -54,6 +54,9 @@ management:
   zipkin:
     tracing:
       endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:http://zipkin:9411/api/v2/spans}
+ai:
+  service:
+    ats-score-url: http://ai-service:8086/api/ai/ats-score
 
 logging:
   file:
